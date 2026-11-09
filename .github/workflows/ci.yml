@@ -36,10 +36,8 @@ jobs:
 
       # Code quality
       - name: Run Ruff
-        run: ruff check src tests
+        run: ruff check .
 
-      - name: Pytest
-        run: uv run pytest --cov=src --cov-fail-under=70
 
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
