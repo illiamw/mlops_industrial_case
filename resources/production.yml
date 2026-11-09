@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    training_model:
+      name: production_job
+
+      tasks:
+        - task_key: produtionize_model
+
+          notebook_task:
+            notebook_path: ../notebooks/04_prodution.ipynb
+
+            base_parameters:
+              source_catalog: ${var.source_catalog}
+              target_catalog: ${var.target_catalog}
+              schema: ${var.schema}
+              model: ${var.model}
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "6"
+      performance_target: PERFORMANCE_OPTIMIZED
