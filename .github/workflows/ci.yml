@@ -34,9 +34,9 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      # Code quality
-    #   - name: Run Ruff
-    #     run: ruff check .
+    #   Code quality
+      - name: Run Ruff
+        run: ruff check notebooks
 
 
       - name: Install Databricks CLI
