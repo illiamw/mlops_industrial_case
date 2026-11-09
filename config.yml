@@ -1,0 +1,9 @@
+prd:
+  catalog_name: prd
+  schema_name: falhadata
+test:
+  catalog_name: test
+  schema_name: falhadata
+dev:
+  catalog_name: dev
+  schema_name: falhadata
