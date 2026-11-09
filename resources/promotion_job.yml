@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    training_model:
+      name: promotion_model
+
+      tasks:
+        - task_key: preprocess_data
+
+          notebook_task:
+            notebook_path: ../notebooks/notebooks/03_pp_promote.ipynb
+
+            base_parameters:
+              source_catalog: ${var.source_catalog}
+              target_catalog: ${var.target_catalog}
+              schema: ${var.schema}
+              model: ${var.model}
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "6"
+      performance_target: PERFORMANCE_OPTIMIZED

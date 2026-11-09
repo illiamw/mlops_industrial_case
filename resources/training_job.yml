@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    training_model:
+      name: training_model
+
+      tasks:
+        - task_key: preprocess_data
+
+          notebook_task:
+            notebook_path: ../notebooks/notebooks/01_pp_predata.ipynb
+
+            base_parameters:
+              catalog: ${var.catalog}
+              
+        - task_key: train_model
+
+          notebook_task:
+            notebook_path: ../notebooks/notebooks/02_pp_train_models.ipynb
+
+            base_parameters:
+              catalog: ${var.catalog}
+
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "6"
+      performance_target: PERFORMANCE_OPTIMIZED
