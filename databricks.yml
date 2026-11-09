@@ -24,6 +24,8 @@ targets:
 
     variables:
       catalog: dev
+      schema: falha
+      model: failure_predictor
 
   test:
     mode: production
