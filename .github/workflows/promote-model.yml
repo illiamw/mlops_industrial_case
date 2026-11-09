@@ -1,0 +1,34 @@
+name: Promote Model
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: databricks/setup-cli@main
+
+      - name: Deploy Bundle test
+        run: |
+          databricks bundle deploy -t test
+
+      - name: Promote Model
+        run: |
+          databricks bundle run -t test promotion_model
+
+      - name: Deploy Bundle prod
+        run: |
+          databricks bundle deploy -t prod
+
+      - name: Validate Model
+        run: |
+          databricks bundle run -t prod production_job

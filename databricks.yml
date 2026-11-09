@@ -1,0 +1,54 @@
+bundle:
+  name: mlops_industrial_case
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Catalog do ambiente
+  schema:
+    default: falha
+
+targets:
+
+  dev:
+    mode: development
+
+    default: true
+
+    workspace:
+      host: https://dbc-0395191b-4103.cloud.databricks.com/
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
+
+    variables:
+      catalog: dev
+
+  test:
+    mode: production
+
+    workspace:
+      host: https://dbc-0395191b-4103.cloud.databricks.com/
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
+
+    variables:
+      source_catalog: dev
+      target_catalog: test
+      schema: falha
+      model: failure_predictor
+
+  prod:
+    mode: production
+
+    workspace:
+      host: https://dbc-0395191b-4103.cloud.databricks.com/
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
+
+    variables:
+      source_catalog: test
+      target_catalog: prod
+      schema: falha
+      model: failure_predictor
