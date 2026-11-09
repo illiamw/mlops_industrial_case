@@ -1,8 +1,0 @@
-pyproject.toml
-mlops_industrial_case.egg-info/PKG-INFO
-mlops_industrial_case.egg-info/SOURCES.txt
-mlops_industrial_case.egg-info/dependency_links.txt
-mlops_industrial_case.egg-info/requires.txt
-mlops_industrial_case.egg-info/top_level.txt
-notebooks/pp_predata.py
-notebooks/pp_train_models.py
