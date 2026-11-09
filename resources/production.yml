@@ -1,6 +1,6 @@
 resources:
   jobs:
-    training_model:
+    production_job:
       name: production_job
 
       tasks:
