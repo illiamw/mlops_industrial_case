@@ -54,12 +54,6 @@ jobs:
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
 
-      - name: Validate Bundle DEV
-        run: databricks bundle validate -t dev
-
-      - name: Validate Bundle TEST
-        run: databricks bundle validate -t test
-
       - name: Validate Bundle PROD
         run: databricks bundle validate -t prod
 
@@ -90,37 +84,13 @@ jobs:
         uses: databricks/setup-cli@main
 
       # ======================================
-      # 1. TRAINING - DEV
+      # 1. DEPLOY
       # ======================================
 
-      - name: Deploy DEV
+      - name: Deploy PROD
         run: |
           databricks bundle deploy -t dev
 
       - name: Run Training
         run: |
-          databricks bundle run -t dev training_model
-
-      # ======================================
-      # 2. PROMOTION - TEST
-      # ======================================
-
-      - name: Deploy TEST
-        run: |
-          databricks bundle deploy -t test
-
-      - name: Promote Model
-        run: |
-          databricks bundle run -t test promotion_model
-
-      # ======================================
-      # 3. PRODUCTION - PROD
-      # ======================================
-
-      - name: Deploy PROD
-        run: |
-          databricks bundle deploy -t prod
-
-      - name: Validate Model in Production
-        run: |
-          databricks bundle run -t prod production_job
+          databricks bundle run -t prod deployment_job --no-wait
