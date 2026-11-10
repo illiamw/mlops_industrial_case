@@ -17,17 +17,17 @@ jobs:
 
       - uses: databricks/setup-cli@main
 
-      - name: Deploy Bundle test
-        run: |
-          databricks bundle deploy -t test
+      # - name: Deploy Bundle test
+      #   run: |
+      #     databricks bundle deploy -t test
 
       - name: Promote Model
         run: |
           databricks bundle run -t test promotion_model --no-wait
 
-      - name: Deploy Bundle prod
-        run: |
-          databricks bundle deploy -t prod
+      # - name: Deploy Bundle prod
+      #   run: |
+      #     databricks bundle deploy -t prod
 
       - name: Validate Model
         run: |
