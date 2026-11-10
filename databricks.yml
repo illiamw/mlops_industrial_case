@@ -4,26 +4,7 @@ bundle:
 include:
   - resources/*.yml
 
-variables:
-  catalog:
-    description: Catalog padrão de desenvolvimento
-    default: dev
 
-  source_catalog:
-    description: Catalog de origem dos dados
-    default: dev
-
-  target_catalog:
-    description: Catalog de destino dos modelos
-    default: dev
-
-  schema:
-    description: Schema utilizado no pipeline
-    default: falha
-
-  model:
-    description: Nome do modelo de Machine Learning
-    default: failure_predictor
 
 targets:
 
@@ -36,11 +17,7 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
       file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
 
-    variables:
-      source_catalog: dev
-      target_catalog: dev
-      schema: falha
-      model: failure_predictor
+
 
   test:
     mode: production
@@ -50,12 +27,7 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
       file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
 
-    variables:
-      catalog: dev
-      source_catalog: dev
-      target_catalog: test
-      schema: falha
-      model: failure_predictor
+
 
   prod:
     mode: production
@@ -64,9 +36,3 @@ targets:
       host: https://dbc-0395191b-4103.cloud.databricks.com
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
       file_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/files
-
-    variables:
-      source_catalog: test
-      target_catalog: prod
-      schema: falha
-      model: failure_predictor
