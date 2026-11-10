@@ -1,0 +1,126 @@
+
+name: CI/CD - MLOps Pipeline
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+
+  # ==========================================
+  # CI - TESTES E VALIDAÇÃO
+  # ==========================================
+  validate:
+    name: CI - Tests and Validation
+    runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_AUTH_TYPE: pat
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+    #   - name: Run Ruff
+    #     run: ruff check .
+
+    #   - name: Run Tests
+    #     run: pytest
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate Bundle DEV
+        run: databricks bundle validate -t dev
+
+      - name: Validate Bundle TEST
+        run: databricks bundle validate -t test
+
+      - name: Validate Bundle PROD
+        run: databricks bundle validate -t prod
+
+
+  # ==========================================
+  # CD - PIPELINE MLOPS
+  # ==========================================
+  mlops-pipeline:
+    name: MLOps - Training, Promotion and Production
+
+    needs: validate
+
+    # Executa somente após merge/push na main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+
+    runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_AUTH_TYPE: pat
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # ======================================
+      # 1. TRAINING - DEV
+      # ======================================
+
+      - name: Deploy DEV
+        run: |
+          databricks bundle deploy -t dev
+
+      - name: Run Training
+        run: |
+          databricks bundle run -t dev training_model
+
+      # ======================================
+      # 2. PROMOTION - TEST
+      # ======================================
+
+      - name: Deploy TEST
+        run: |
+          databricks bundle deploy -t test
+
+      - name: Promote Model
+        run: |
+          databricks bundle run -t test promotion_model
+
+      # ======================================
+      # 3. PRODUCTION - PROD
+      # ======================================
+
+      - name: Deploy PROD
+        run: |
+          databricks bundle deploy -t prod
+
+      - name: Validate Model in Production
+        run: |
+          databricks bundle run -t prod production_job
