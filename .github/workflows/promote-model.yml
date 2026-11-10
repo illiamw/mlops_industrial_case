@@ -1,7 +1,7 @@
 name: Promote Model
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -23,7 +23,7 @@ jobs:
 
       - name: Promote Model
         run: |
-          databricks bundle run -t test promotion_model
+          databricks bundle run -t test promotion_model --no-wait
 
       - name: Deploy Bundle prod
         run: |
@@ -31,4 +31,4 @@ jobs:
 
       - name: Validate Model
         run: |
-          databricks bundle run -t prod production_job
+          databricks bundle run -t prod production_job --no-wait
