@@ -28,7 +28,7 @@ variables:
 targets:
 
   dev:
-    mode: development
+    mode: production
     default: true
 
     workspace:

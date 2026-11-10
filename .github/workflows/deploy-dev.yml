@@ -24,4 +24,4 @@ jobs:
       - name: Run Training
         
         run: |
-          databricks bundle run -t dev training_model
+          databricks bundle run -t dev training_model --no-wait
