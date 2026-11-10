@@ -4,10 +4,10 @@ resources:
       name: promotion_model
 
       tasks:
-        - task_key: preprocess_data
+        - task_key: promote_model
 
           notebook_task:
-            notebook_path: ../notebooks/notebooks/03_pp_promote.ipynb
+            notebook_path: ../notebooks/03_pp_promote.ipynb
 
             base_parameters:
               source_catalog: ${var.source_catalog}
