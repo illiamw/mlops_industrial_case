@@ -1,10 +1,9 @@
 name: Deploy DEV
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
