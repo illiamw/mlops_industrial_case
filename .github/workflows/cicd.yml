@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy PROD
         run: |
-          databricks bundle deploy -t dev
+          databricks bundle deploy -t prod
 
       - name: Run Training
         run: |
